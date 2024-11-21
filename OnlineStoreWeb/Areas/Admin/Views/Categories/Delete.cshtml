@@ -1,0 +1,27 @@
+@model ProductCategory
+
+@{
+    ViewData["Title"] = $"Deleting: {Model.Name}";
+}
+
+<div class="container">
+    <h1 class="text-danger">Delete Category</h1>
+
+    <div class="alert alert-warning mt-4" role="alert">
+        <h5 class="mb-3">
+            <i class="bi bi-exclamation-triangle-fill"></i> Are you sure you want to delete this category and its products?
+        </h5>
+        <p><strong>Category Name:</strong> @Model.Name</p>
+    </div>
+
+    <form method="post" class="mt-3">
+        <div class="d-flex justify-content-start">
+            <button type="submit" class="btn btn-danger me-3">
+                <i class="bi bi-trash"></i> Delete
+            </button>
+            <a href="@Url.Action("index", "categories")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>

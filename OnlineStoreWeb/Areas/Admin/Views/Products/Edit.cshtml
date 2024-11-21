@@ -1,0 +1,78 @@
+@model UpdateProductRequestDto
+
+@{
+    ViewData["Title"] = $"Editing: {Model.Name}";
+    IEnumerable<ProductCategory> categories = ViewBag.Categories;
+    string photosPrefix = ProductFileBag.PhotoPrefix;
+}
+
+<div class="container">
+    <h1 class="text-primary mb-4">Edit Product</h1>
+
+    <form id="mainForm" asp-action="Edit" method="post">
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label for="Name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <label for="Description" class="form-label">Description</label>
+                <textarea class="form-control" id="Description" name="Description" asp-for="Description" rows="4" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label for="Price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="Price" name="Price" asp-for="Price" step="0.01" required />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label for="CategoryId" class="form-label">Category</label>
+                <select class="form-select" id="CategoryId" asp-for="CategoryId" required>
+                    <option value="">Select a category</option>
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <label for="productPhotos" class="form-label">Photos</label>
+                <div id="productPhotos" class="dropzone"></div>
+                <span asp-validation-for="Photos" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-save"></i> Save Changes
+            </button>
+            <a href="@Url.Action("index", "products")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+@{
+    await Html.RenderPartialAsync("_ScriptsValidation");
+    await Html.RenderPartialAsync("_ScriptsFileUploading");
+}
+<script>
+    $(document).ready(function () {
+        BindDropZone({
+            targetSelector: '#productPhotos',
+            fieldName: 'Photos',
+            filePrefix: '@photosPrefix',
+            maxFiles: 10,
+            existingFiles: @(Model.Photos?.Any() == true
+                ? Html.Raw(JsonSerializer.Serialize(Model.Photos))
+                : "[]"
+            )
+        });
+    });
+
+</script>
+}
+

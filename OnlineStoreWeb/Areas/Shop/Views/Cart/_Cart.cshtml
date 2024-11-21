@@ -1,0 +1,56 @@
+@model Cart
+
+@if (Model.Items.Count == 0)
+{
+    <div class="alert alert-info" role="alert">
+        Your cart is empty. Add some products to your cart!
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>
+                            <input type="number" name="quantity" min="1" value="@item.Quantity" onchange="СartItemQuantityChanged(@item.ProductId, this.value)" class="form-control d-inline" style="width: 70px;"/>
+                        </td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@((item.Price * item.Quantity).ToString("C"))</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="RemoveСartItem(@item.ProductId)">Remove</button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Order Summary</h4>
+                    <p class="card-text">
+                        <strong>Total Items:</strong> @Model.Items.Sum(i => i.Quantity)
+                    </p>
+                    <p class="card-text">
+                        <strong>Total Price:</strong> @Model.Items.Sum(i => i.Price * i.Quantity).ToString("C")
+                    </p>
+                    <a href="/checkout" class="btn btn-success btn-block">Proceed to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

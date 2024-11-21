@@ -1,0 +1,77 @@
+@{
+    bool isUserLogged = User.Identity?.IsAuthenticated == true;
+    bool isUserAdmin = User.IsInRole(RoleType.Admin.ToString());
+    int cartItemCount = (int)Context.Items["CartItemCount"];
+}
+
+<header class="bg-light border-bottom">
+    <nav class="navbar navbar-expand navbar-light justify-content-between p-3">
+        <a class="navbar-brand" href="/">OnlineStoreWeb</a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a asp-area="common" asp-controller="site" asp-action="privacy" class="nav-link text-dark">
+                        Privacy
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="shop" asp-controller="shop" asp-action="index" class="nav-link text-dark">
+                        Shop
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="shop" asp-controller="shop" asp-action="catalog" class="nav-link text-dark">
+                        Catalog
+                    </a>
+                </li>
+                @if (isUserAdmin) {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin Menu
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                            <li>
+                                <a asp-area="admin" asp-controller="products" asp-action="index" class="dropdown-item">
+                                    Products
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="admin" asp-controller="categories" asp-action="index" class="dropdown-item">
+                                    Categories
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                <li class="list-inline-item">
+                    <a asp-area="shop" asp-controller="cart" asp-action="index" class="nav-link text-dark text-decoration-none">
+                        <span class="cart-count">
+                            <i class="bi bi-cart"></i>
+                            <span id="cartItemCounter" class="badge @(cartItemCount > 0 ? "bg-success" : "bg-secondary")">@cartItemCount</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <div class="auth-links ml-3 d-flex align-items-center">
+                @if (isUserLogged) {
+                    <div class="navbar-text mr-3">
+                        Welcome, @User.Identity.Name!
+                    </div>
+                    <form id="logoutForm" asp-area="identity" asp-controller="account" asp-action="logout" method="post" class="form-inline">
+                        <button type="submit" class="btn btn-link nav-link">
+                            Logout
+                        </button>
+                    </form>
+                }
+                else {
+                    <a asp-area="identity" asp-controller="account" asp-action="login" class="btn btn-outline-primary mx-2">
+                        Login
+                    </a>
+                    <a asp-area="identity" asp-controller="account" asp-action="register" class="btn btn-primary">
+                        Register
+                    </a>
+                }
+            </div>
+        </div>
+    </nav>
+</header>

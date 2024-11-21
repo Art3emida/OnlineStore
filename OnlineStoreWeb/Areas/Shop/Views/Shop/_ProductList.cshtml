@@ -1,0 +1,17 @@
+@model IEnumerable<Product>
+
+@foreach (var product in Model)
+{
+    <div class="col-md-4 mb-4 product-item">
+        <div class="card">
+            <img src="/@((product.Photos.FirstOrDefault()?.PhotoUrl) ?? "images/product-photo-placeholder.jpg")" class="card-img-top" alt="@product.Name" />
+            <div class="card-body">
+                <h5 class="card-title">@product.Name</h5>
+                <p class="card-text">Price: $@product.Price.ToString("F2")</p>
+                <a asp-action="details" asp-route-id="@product.Id" class="btn btn-primary">
+                    View Details
+                </a>
+            </div>
+        </div>
+    </div>
+}

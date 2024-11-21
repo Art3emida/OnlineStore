@@ -1,0 +1,61 @@
+@model UpdateProductCategoryRequestDto
+
+@{
+    ViewData["Title"] = $"Editing: {Model.Name}";
+    string photoPrefix = ProductCategoryFileBag.PhotoPrefix;
+}
+
+<div class="container">
+    <h1 class="text-primary mb-4">Edit Category</h1>
+
+    <form id="mainForm" asp-action="Edit" method="post">
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label for="Name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <label for="Description" class="form-label">Description</label>
+                <textarea class="form-control" id="Description" name="Description" asp-for="Description" rows="4" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <label for="categoryPhoto" class="form-label">Photo</label>
+                <div id="categoryPhoto" class="dropzone"></div>
+                <span asp-validation-for="Photo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-save"></i> Save Changes
+            </button>
+            <a href="@Url.Action("index", "categories")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+@{
+    await Html.RenderPartialAsync("_ScriptsValidation");
+    await Html.RenderPartialAsync("_ScriptsFileUploading");
+}
+<script>
+    $(document).ready(function () {
+        BindDropZone({
+            targetSelector: '#categoryPhoto',
+            fieldName: 'Photo',
+            filePrefix: '@photoPrefix',
+            maxFiles: 1,
+            existingFiles: [@(Model.Photo != null
+                ? Html.Raw("'" + Model.Photo + "'")
+                : ""
+            )]
+        });
+    });
+
+</script>
+}
+

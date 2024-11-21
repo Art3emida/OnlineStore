@@ -1,0 +1,42 @@
+html, body {
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+header > nav {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+main {
+    flex-grow: 1;
+}
+
+main .container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+footer .container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+.auth-links {
+    border-left: 1px solid #ececec;
+    padding-left: 10px;
+    margin-left: 10px;
+}
+
+.dropzone {
+    border: 1px dashed grey;
+}
+
+.dropzone .dz-preview .dz-image img {
+    width: 100%;
+    height: 100%;
+}

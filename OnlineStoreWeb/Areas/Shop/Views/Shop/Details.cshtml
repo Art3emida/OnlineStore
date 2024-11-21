@@ -1,0 +1,120 @@
+@model Product
+
+@{
+    ViewData["Title"] = Model.Name;
+    Cart cart = (Cart)Context.Items["Cart"];
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-sm-12 mb-4">
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @if (Model.Photos.Any())
+                    {
+                        @foreach (var photo in Model.Photos)
+                        {
+                            <div class="carousel-item @(photo == Model.Photos.First() ? "active" : "")">
+                                <img src="/@photo.PhotoUrl" class="d-block w-100 cursor-pointer" alt="@Model.Name" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="/@photo.PhotoUrl" />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="carousel-item active">
+                            <img src="/images/product-photo-placeholder.jpg" class="d-block w-100 cursor-pointer" alt="photo" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="/images/product-photo-placeholder.jpg" />
+                        </div>
+                    }
+                </div>
+                @if (Model.Photos.Count > 1)
+                {
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                }
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="card shadow-sm">
+                @if (cart.Items.Any(p => p.ProductId == Model.Id))
+                {
+                    <div class="bg-warning text-dark fw-bold p-2" style="z-index: 10;">
+                        Already in Cart
+                    </div>
+                }
+                <div class="card-body">
+                    <h1 class="card-title">@Model.Name</h1>
+                    <p class="card-text">@Model.Description</p>
+                    <div class="d-flex align-items-center mb-3">
+                        <p class="h4 text-success me-2">Price:</p>
+                        <p class="display-5 text-primary fw-bold">$@Model.Price.ToString("F2")</p>
+                    </div>
+                    @if (!cart.Items.Any(p => p.ProductId == Model.Id))
+                    {
+                        <div class="form-group mb-3">
+                            <label for="addToCartQuantity" class="form-label">Quantity:</label>
+                            <input type="number" id="addToCartQuantity" name="quantity" value="1" min="1" class="form-control" style="width: 100px;" />
+                        </div>
+                        <button class="btn btn-success btn-lg btn-block" onclick="AddToCart({productId: @Model.Id, quantity: 1, quantitySelector: '#addToCartQuantity', redirect: true})">
+                            Add to Cart
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="imageCarouselModal" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="carouselImagesModal"></div>
+                    @if (Model.Photos.Count > 1)
+                    {
+                        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarouselModal" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#imageCarouselModal" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $('#imageModal').on('show.bs.modal', function (event) {
+        let sourceImage = $(event.relatedTarget),
+            imageUrl = sourceImage.data('bs-image');
+
+        let images = sourceImage.closest('.carousel').find('img').map(function () {
+            return $(this).attr('src');
+        }).get();
+
+        let carouselInner = $('#carouselImagesModal');
+        carouselInner.empty();
+
+        images.forEach((image, index) => {
+            let isActive = (image === imageUrl) ? 'active' : '';
+            let carouselItem = `
+                <div class="carousel-item ${isActive}">
+                    <img src="${image}" class="d-block w-100" alt="Product Image ${index + 1}">
+                </div>
+            `;
+            carouselInner.append(carouselItem);
+        });
+    });
+</script>
+}

@@ -1,0 +1,45 @@
+@model CategoryViewModel
+
+@{
+    ViewData["Title"] = Model.Category.Name;
+}
+
+<div class="container">
+    <h1>Category: @Model.Category.Name</h1>
+
+    <div id="product-list" class="row">
+        @if (Model.ProductsList.Items.Any())
+        {
+            @await Html.PartialAsync("_ProductList", Model.ProductsList.Items)
+        }
+        else
+        {
+            <div class="col-12">
+                <p class="alert alert-warning text-center">No products found in this category.</p>
+            </div>
+        }
+    </div>
+    @if (Model.ProductsList.Pagination.HasNextPage)
+    {
+        <div class="text-center mt-4 mb-4">
+            <button id="load-more-btn" class="btn btn-outline-primary px-4 py-2">Load More</button>
+        </div>
+    }
+</div>
+
+@await Html.PartialAsync("_Pagination", Model.ProductsList.Pagination)
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        BindPaginationButtonMore({
+            buttonSelector: '#load-more-btn',
+            containerSelector: '#product-list',
+            paginationSelector: '#pagination',
+            total: @Model.ProductsList.Pagination.Total,
+            limit: @Model.ProductsList.Pagination.PerPage,
+            currentPage: @Model.ProductsList.Pagination.CurrentPage
+        });
+    });
+</script>
+}

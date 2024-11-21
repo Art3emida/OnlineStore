@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>OnlineStoreWeb</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\OnlineStore.Application\OnlineStore.Application.csproj" />
+      <ProjectReference Include="..\OnlineStore.Domain\OnlineStore.Domain.csproj" />
+      <ProjectReference Include="..\OnlineStore.Infrastructure\OnlineStore.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Account\Login.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Account\Register.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Error\404.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Error\500.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Error\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Products\Categories.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Products\Category.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Products\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Products\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Customer\Views\Error\404.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Customer\Views\Error\500.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Customer\Views\Error\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\Components\CartCount\Default.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Areas\Admin\Views\Categories\Create.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Categories\Delete.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Categories\Edit.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Categories\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Shop\Views\Shop\Category.cshtml" />
+      <AdditionalFiles Include="Areas\Shop\Views\Shop\Details.cshtml" />
+      <AdditionalFiles Include="Areas\Shop\Views\Shop\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Shop\Views\_ViewImports.cshtml" />
+      <AdditionalFiles Include="Areas\Shop\Views\_ViewStart.cshtml" />
+      <AdditionalFiles Include="Views\Shared\_Layout.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\content\" />
+    </ItemGroup>
+
+</Project>

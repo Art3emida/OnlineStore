@@ -1,0 +1,51 @@
+﻿@{
+    bool isUserLogged = User.Identity?.IsAuthenticated == true;
+}
+
+<footer class="bg-light border-top text-dark py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li>Email: support@onlinestoreweb.com</li>
+                    <li>Phone: +38 090 123 45 67</li>
+                    <li>Address: 123 Ecommerce St, Lapland</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="/" class="text-dark">Home</a>
+                    </li>
+                    <li>
+
+                        <a asp-area="common" asp-controller="site" asp-action="privacy" class="text-dark">
+                            Privacy Policy
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="shop" asp-controller="shop" asp-action="catalog" class="text-dark">
+                            Catalog
+                        </a>
+                    </li>
+                    @if (!isUserLogged) {
+                        <li><a asp-area="identity" asp-controller="account" asp-action="login" class="text-dark">Login</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Follow Us</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-dark">Facebook</a></li>
+                    <li><a href="#" class="text-dark">Twitter</a></li>
+                    <li><a href="#" class="text-dark">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <p class="mb-0">© @DateTime.Now.Year OnlineStoreWeb. All rights reserved.</p>
+        </div>
+    </div>
+</footer>

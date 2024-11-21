@@ -1,0 +1,44 @@
+@model IListStructure<Product>
+
+@{
+    ViewData["Title"] = "Last Shop";
+}
+
+<div class="container">
+    <h1 class="text-center display-5 mb-4">Last Shop</h1>
+    <div id="product-list" class="row">
+        @if (Model.Items.Any())
+        {
+            @await Html.PartialAsync("_ProductList", Model.Items)
+        }
+        else
+        {
+            <div class="col-12">
+                <p class="text-muted text-center">No products found.</p>
+            </div>
+        }
+    </div>
+    @if (Model.Pagination.HasNextPage)
+    {
+        <div class="text-center mt-4 mb-4">
+            <button id="load-more-btn" class="btn btn-outline-primary px-4 py-2">Load More</button>
+        </div>
+    }
+</div>
+
+@await Html.PartialAsync("_Pagination", Model.Pagination)
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        BindPaginationButtonMore({
+            buttonSelector: '#load-more-btn',
+            containerSelector: '#product-list',
+            paginationSelector: '#pagination',
+            total: @Model.Pagination.Total,
+            limit: @Model.Pagination.PerPage,
+            currentPage: @Model.Pagination.CurrentPage
+        });
+    });
+</script>
+}
